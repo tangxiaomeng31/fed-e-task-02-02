@@ -2,24 +2,14 @@
 const baseWebpackConfig = require('./webpack.common')
 const {merge} = require('webpack-merge')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const CopyWebpackPlugin = require('copy-webpack-plugin')
-const path = require('path')
 
 module.exports = merge(baseWebpackConfig, {
     mode: 'development',
     plugins: [
-        // new HtmlWebpackPlugin({
-        //     filename: path.join(__dirname, 'dist'),
-        //     template: 'index.html',//html模板
-        // }),
-        // new CopyWebpackPlugin({
-        //     patterns: [
-        //         { 
-        //             from: path.join(__dirname, './src/assets'),
-        //             to: path.join(__dirname, 'dist')
-        //         }
-        //     ],
-        // })
+        new HtmlWebpackPlugin({
+            title: 'Vue demo',
+            template: './public/index.html'
+        })
     ],
     devServer: {
         contentBase: false,

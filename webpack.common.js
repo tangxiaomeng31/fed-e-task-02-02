@@ -1,5 +1,7 @@
 const path = require("path")
 const webpack = require('webpack')
+const VueLoaderPlugin = require('vue-loader/lib/plugin')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 //公共配置
 // /**@type import('webpack').Configuration */
 module.exports = {
@@ -10,15 +12,15 @@ module.exports = {
     },
     module: {
         rules: [
-            {
-                test: /\.js$/,
-                use: {
-                    loader: 'babel-loader',
-                    options: {
-                        presets: ['@babel/preset-env']
-                    }
-                }
-            },
+            // {
+            //     test: /\.js$/,
+            //     use: {
+            //         loader: 'babel-loader',
+            //         options: {
+            //             presets: ['@babel/preset-env']
+            //         }
+            //     }
+            // },
             {
                 test: /\.vue$/,
                 use: {
@@ -26,32 +28,41 @@ module.exports = {
                 }
             },
             {
+                test: /\.(js|vue)$/,
+                loader: 'eslint-loader',
+                enforce: 'pre',
+                // include: [resolve('src'), resolve('test')],
+                // options: {
+                //   formatter: require('eslint-friendly-formatter')
+                // }
+              },
+            {
                 test: /\.less$/,
-                use: [
-                    {
-                        loader: 'style-loader', 
-                    },
-                    {
-                        loader: 'css-loader',
-                    },
-                    {
-                        loader: 'less-loader', // 编译 Less -> CSS
-                    },
-                ]
+                use: ['style-loader', 'css-loader', 'less-loader']
+            },
+            {
+                test: /\.css$/,
+                use: ['style-loader', 'css-loader']
             },
             {
                 test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
-                use: {
-                    loader: 'url-loader',
-                    options: {
-                        limit: 5 * 1024 ,//10kb
-                        name: '[name].[hash:7].[ext]'
+                use: [
+                    {
+                        loader: 'url-loader',
+                        options: {
+                            limit: 5 * 1024 ,//10kb
+                            name: '[name].[hash:7].[ext]',
+                            esModule: false
+                        }
                     }
-                }
+                ]
             }
         ]
     },
     plugins: [
-
+        new VueLoaderPlugin(),
+        new webpack.DefinePlugin({
+            BASE_URL: JSON.stringify('/')
+        })
     ],
 }
