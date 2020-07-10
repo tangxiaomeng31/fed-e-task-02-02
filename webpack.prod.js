@@ -7,6 +7,7 @@ const path = require('path')
 
 module.exports = merge(baseWebpackConfig, {
     mode:"production",
+    devtool: 'none',
     plugins: [
         new CleanWebpackPlugin(),
         new CopyWebpackPlugin({
